@@ -1,15 +1,15 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
-#include <time.h> 
+#include <iostream>
+
+#include <time.h>
+
 #include "mainClass.hpp"
 
 mainClass::mainClass(){}
 
 void mainClass::run(){
-	boids = 10;
-	threads = 1;
-	rounds = 10;
 	evenRound = false;
 	srand (time(NULL));
 
@@ -50,6 +50,20 @@ void mainClass::run(){
 
 int main(int argc, char **argv) {
 	mainClass m;
-	m.run();
+	m.boids = 10;
+	m.threads = 1;
+	m.rounds = 10;
 
+	if(argc == 3){
+		m.boids = atoi(argv[1]);
+		m.rounds = atoi(argv[2]);
+	}else if(argc == 4){
+		m.boids = atoi(argv[1]);
+		m.rounds = atoi(argv[2]);
+		m.threads = atoi(argv[3]);
+	}else{
+		std::cerr << "ERR: Please use command like this:\n\t./boids boids rounds [threads]\n\n";
+        exit(1);
+	}
+	m.run();
 }

@@ -9,10 +9,10 @@ class mainClass{
 public:
 	mainClass();
 	void run();
-private:
 	int boids;
 	int threads;
 	int rounds;
+private:
 	bool evenRound;
 	std::vector<boid> boidsVec1;
 	std::vector<boid> boidsVec2;

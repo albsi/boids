@@ -8,8 +8,8 @@ mainClass::mainClass(){}
 
 void mainClass::run(){
 	boids = 10;
-	threads = 2;
-	rounds = 4;
+	threads = 1;
+	rounds = 10;
 	evenRound = false;
 	srand (time(NULL));
 
@@ -28,7 +28,9 @@ void mainClass::run(){
 	int groupSize = std::ceil((boids * 1.0) / threads);
 
 	for(int k = 0; k < rounds; ++k){
-		std::cout << "R" << k << "\n";
+		if(k%5==0){
+			std::cout << "."; //TODO remove this im alive thing
+		}
 		for (int i = 0; i < threads; ++i){
 			std::vector<boid*> vec;
 			for (int j = 0; j < groupSize && (i * groupSize + j) < boids; ++j){
@@ -41,11 +43,8 @@ void mainClass::run(){
 		}
 		
 		for (int i = 0; i < threads;++i){
-			std::cout << "G" << i << ":\n";
 			groupsVec.at(i).calcNewPos();
-			std::cout << "\n";
 		}
-		std::cout << "\n";
 	}
 }
 

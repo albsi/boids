@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include "boid.hpp"
 
 const position operator+(position const& p1, position const& p2){ 
@@ -37,6 +39,14 @@ const position operator/(position const& p1, float const& f){
  	return tmp; 
 }
 
+const position operator*(position const& p1, float const& f){ 
+	position tmp; 
+ 	tmp.x = 0.0f;
+ 	tmp.y = 0.0f;
+ 	tmp.x = p1.x * f;
+ 	tmp.y = p1.y * f;
+ 	return tmp; 
+}
 position& operator/=(position & p1, const float& f){
  	p1.x = p1.x / f;
  	p1.y = p1.y / f;
@@ -74,33 +84,49 @@ boid::boid(position p, position v){
 boid::boid( const boid& other ) :
      pos( other.pos ), vel( other.vel ){}
 
-void boid::rule1(position &massPos){
-	pos += (massPos - pos) / 10.0f;
-	//std::cout << "[" << pos.x << "," << pos.y << "] ";
-}
-
-void boid::rule2(boid &b2){
+void boid::rule1(std::vector<boid*> &boidsGroup){
 	boid * bp = this;
-	if(*bp != b2){
-		if((pos - b2.pos) < 10.0f){
-			vel = 0.0f - (pos - b2.pos);
+	position tmp;
+	tmp.x = 0.0f;
+	tmp.y = 0.0f;
+	for_each(boidsGroup.begin(), boidsGroup.end(), [&](boid * b1) {
+		if(*bp != *b1){
+			tmp += b1->pos;
 		}
-	}
-	//std::cout << "[" << vel.x << "," << vel.y << "] ";
+	});
+	tmp /= boidsGroup.size() - 1;
+	pos += ((tmp - pos) * 0.1f);
 }
 
-void boid::rule3(position &massVel){
-	pos += (massVel - pos) / 8.0f;
-	//std::cout << "[" << pos.x << "," << pos.y << "] ";
+void boid::rule2(std::vector<boid*> &boidsGroup){
+	boid * bp = this;
+	for_each(boidsGroup.begin(), boidsGroup.end(), [&](boid * b1) {
+		if(*bp != *b1){
+			if((pos - b1->pos) < 10.0f){
+				vel = 0.0f - (pos - b1->pos);
+			}
+		}
+	});
+}
+
+void boid::rule3(std::vector<boid*> &boidsGroup){
+	boid * bp = this;
+	position tmp;
+	tmp.x = 0.0f;
+	tmp.y = 0.0f;
+	for_each(boidsGroup.begin(), boidsGroup.end(), [&](boid * b1) {
+		if(*bp != *b1){
+			tmp += b1->vel;
+		}
+	});
+	tmp /= boidsGroup.size() - 1;
+	pos += (tmp - pos) / 8.0f;
 }
 
 void boid::move(){
-	//std::cout << pos <<  " " << vel;
 	pos += vel;
-	std::cout << pos << "\n";
+	//std::cout << pos << "\n";
 }
 
-boid::~boid(){
-
-}
+boid::~boid(){}
 

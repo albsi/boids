@@ -1,4 +1,4 @@
-#ifndef __SEMAPHORE_HPP__
+/*#ifndef __SEMAPHORE_HPP__
 #define __SEMAPHORE_HPP__
 
 #include <mutex>
@@ -18,3 +18,4 @@ private:
 };
 
 #endif
+*/

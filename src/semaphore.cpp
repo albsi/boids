@@ -1,4 +1,4 @@
-#include "semaphore.hpp"
+/*#include "semaphore.hpp"
 #include <mutex>
 
 semaphore::semaphore() {
@@ -24,4 +24,4 @@ void semaphore::decrement() {
     mtx.lock();
     this->counter--;
     mtx.unlock();
-}
+}*/

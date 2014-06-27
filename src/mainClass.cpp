@@ -39,13 +39,13 @@ void mainClass::run(){
 	}
 
 	for(int k = 0; k < rounds; ++k){
-		std::cout << "*";
+		std::cout << ".";
 		for (int i = 0; i < threads; ++i){
 			groupsVec.at(i).calcNewPos(!evenRound ? boidsVec1 : boidsVec2);
 			
 		}
 		evenRound = !evenRound;
-		std::cout << "*\n";
+		//std::cout << "*\n";
 	}
 
 	

@@ -14,8 +14,8 @@ public:
 	int rounds;
 private:
 	bool evenRound;
-	std::vector<boid> boidsVec1;
-	std::vector<boid> boidsVec2;
+	std::vector<boid*> boidsVec1;
+	std::vector<boid*> boidsVec2;
 	std::vector<group> groupsVec;
 };
 

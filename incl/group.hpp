@@ -6,8 +6,8 @@
 
 class group{
 public:
-	group(std::vector<boid*> &boidsGroupVec);
-	void calcNewPos();
+	group(std::vector<boid*> &boidsGroup);
+	void calcNewPos(std::vector<boid*> &allBoids);
 	std::vector<boid*> boidsGroup;
 };
 

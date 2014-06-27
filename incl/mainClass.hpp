@@ -4,6 +4,7 @@
 #include <vector>
 #include "boid.hpp"
 #include "group.hpp"
+#include <pthread.h>
 
 class mainClass{
 public:

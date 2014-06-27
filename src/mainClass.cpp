@@ -2,7 +2,10 @@
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
+#include <mutex>
+#include <chrono>
 
+#include <pthread.h>
 #include <time.h>
 
 #include "mainClass.hpp"
@@ -27,7 +30,12 @@ void mainClass::run(){
 	}
 	int groupSize = std::ceil((boids * 1.0) / threads);
 
+	std::vector<pthread_t*> threads;
+
 	for (int i = 0; i < threads; ++i){
+		threads.push_back(new pthread_t);
+        pthread_create(threads.back(), NULL, start_worker, NULL);
+
 		std::vector<boid*> vec;
 		for (int j = 0; j < groupSize && (i * groupSize + j) < boids; ++j){
 			boid * bp = new boid(evenRound?&boidsVec1.at(i * groupSize + j)->pos, boidsVec1.at(i * groupSize + j)->vel
@@ -38,17 +46,20 @@ void mainClass::run(){
 		groupsVec.push_back(g);
 	}
 
+	std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 	for(int k = 0; k < rounds; ++k){
-		std::cout << "*";
 		for (int i = 0; i < threads; ++i){
 			groupsVec.at(i).calcNewPos(!evenRound ? boidsVec1 : boidsVec2);
-			
 		}
 		evenRound = !evenRound;
-		std::cout << "*\n";
 	}
+	std::chrono::duration<float> runTime = std::chrono::system_clock::now() - startTime;
+	std::cout << "time:" << runTime.count() << "\n";
 
-	
+	for_each(threads.begin(), threads.end(), [](pthread_t *thread) {
+        pthread_join(*thread, NULL);
+        delete thread;
+    });
 }
 
 int main(int argc, char **argv) {

@@ -13,6 +13,7 @@ public:
 	int boids;
 	int threads;
 	int rounds;
+	void* start_worker(void *context);
 private:
 	bool evenRound;
 	std::vector<boid*> boidsVec1;

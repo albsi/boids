@@ -32,9 +32,9 @@ void mainClass::run(){
 
 	std::vector<pthread_t*> threads;
 
-	for (int i = 0; i < threads; ++i){
+	for (int i = 0; i < threads.size(); ++i){
 		threads.push_back(new pthread_t);
-        pthread_create(threads.back(), NULL, start_worker, NULL);
+        pthread_create(threads.back(), NULL, worker, NULL);
 
 		std::vector<boid*> vec;
 		for (int j = 0; j < groupSize && (i * groupSize + j) < boids; ++j){
@@ -60,6 +60,10 @@ void mainClass::run(){
         pthread_join(*thread, NULL);
         delete thread;
     });
+}
+
+void* start_worker(void *context) {
+
 }
 
 int main(int argc, char **argv) {
